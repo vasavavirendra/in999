@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IN999 - Game SSM Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Exo+2:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #f8c233;
+    --gold-dark: #d4a017;
+    --gold-light: #ffe07a;
+    --dark: #0a0a0f;
+    --dark2: #111118;
+    --dark3: #1a1a24;
+    --dark4: #242433;
+    --green: #00e676;
+    --red: #ff1744;
+    --blue: #00b0ff;
+    --text: #e8e8f0;
+    --text-dim: #7a7a9a;
+    --border: rgba(248,194,51,0.15);
+    --glow: 0 0 20px rgba(248,194,51,0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Exo 2', sans-serif;
+    background: var(--dark);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(248,194,51,0.04) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 80% 90%, rgba(248,194,51,0.03) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,15,0.95);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+  }
+
+  .nav-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .logo-badge {
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: #0a0a0f;
+    box-shadow: var(--glow);
+  }
+
+  .logo-text {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 2px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 8px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+
+  .nav-links a:hover { color: var(--gold); background: rgba(248,194,51,0.08); }
+
+  .nav-btns { display: flex; gap: 10px; }
+
+  .btn-login {
+    padding: 8px 20px;
+    border: 1.5px solid var(--gold);
+    border-radius: 20px;
+    background: transparent;
+    color: var(--gold);
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+
+  .btn-login:hover { background: rgba(248,194,51,0.1); }
+
+  .btn-register {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 20px;
+    background: linear-gradient(90deg, #1a1a00, var(--gold));
+    color: #0a0a0f;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 12px rgba(248,194,51,0.3);
+  }
+
+  .btn-register:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(248,194,51,0.5); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    z-index: 1;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 60px 24px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+
+  .hero-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(248,194,51,0.1);
+    border: 1px solid rgba(248,194,51,0.3);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .hero-label::before { content: '●'; color: var(--green); font-size: 8px; animation: pulse 2s infinite; }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .hero h1 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: clamp(36px, 5vw, 60px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: #fff;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 span { color: var(--gold); }
+
+  .hero p {
+    color: var(--text-dim);
+    font-size: 16px;
+    line-height: 1.7;
+    margin-bottom: 32px;
+    max-width: 440px;
+  }
+
+  .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+
+  .hero-btn-primary {
+    padding: 14px 32px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+    color: #0a0a0f;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 20px rgba(248,194,51,0.4);
+  }
+
+  .hero-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(248,194,51,0.5); }
+
+  .hero-btn-secondary {
+    padding: 14px 32px;
+    border: 1.5px solid rgba(248,194,51,0.4);
+    border-radius: 8px;
+    background: rgba(248,194,51,0.05);
+    color: var(--gold);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+  }
+
+  .hero-btn-secondary:hover { background: rgba(248,194,51,0.1); }
+
+  /* Stats bar */
+  .stats-bar {
+    display: flex;
+    gap: 24px;
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+
+  .stat { text-align: left; }
+  .stat-num {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .stat-label { font-size: 12px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
+
+  /* Hero visual */
+  .hero-visual {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-card {
+    width: 100%;
+    max-width: 380px;
+    background: var(--dark3);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), var(--glow);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: 30px; right: 30px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    border-radius: 2px;
+  }
+
+  .bonus-display {
+    text-align: center;
+    padding: 24px 0 20px;
+  }
+
+  .bonus-amount {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 52px;
+    font-weight: 700;
+    color: var(--gold);
+    text-shadow: 0 0 30px rgba(248,194,51,0.5);
+    line-height: 1;
+  }
+
+  .bonus-label {
+    font-size: 13px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 6px;
+  }
+
+  .mini-games {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .mini-game {
+    background: var(--dark4);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 12px 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .mini-game:hover { border-color: rgba(248,194,51,0.3); background: rgba(248,194,51,0.05); }
+
+  .mini-game-icon { font-size: 24px; margin-bottom: 4px; }
+  .mini-game-name { font-size: 10px; font-weight: 600; color: var(--text-dim); letter-spacing: 0.5px; }
+
+  /* ── SECTION ── */
+  .section {
+    position: relative;
+    z-index: 1;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 48px 24px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+
+  .section-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .section-title span { color: var(--gold); }
+
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0 24px;
+  }
+
+  /* ── BONUS OFFERS ── */
+  .bonus-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .bonus-card {
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+
+  .bonus-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+
+  .bonus-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(248,194,51,0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .bonus-card-tag {
+    display: inline-block;
+    background: rgba(248,194,51,0.15);
+    color: var(--gold);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .bonus-card-tag.green { background: rgba(0,230,118,0.15); color: var(--green); }
+  .bonus-card-tag.blue { background: rgba(0,176,255,0.15); color: var(--blue); }
+
+  .bonus-card h3 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .bonus-card p { font-size: 14px; color: var(--text-dim); line-height: 1.6; margin-bottom: 18px; }
+
+  .bonus-big-num {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .bonus-big-num.green { color: var(--green); }
+
+  .claim-btn {
+    display: inline-block;
+    padding: 9px 22px;
+    background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+    color: #0a0a0f;
+    border: none;
+    border-radius: 20px;
+    font-family: 'Exo 2', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+  }
+
+  .claim-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(248,194,51,0.4); }
+
+  /* ── GAME CARDS ── */
+  .games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .game-card {
+    background: var(--dark2);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.25s;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .game-card:hover { transform: translateY(-4px); border-color: rgba(248,194,51,0.3); box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
+
+  .game-card-img {
+    width: 100%;
+    height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 52px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .game-card-img::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 50px;
+    background: linear-gradient(to bottom, transparent, var(--dark2));
+  }
+
+  .bg1 { background: linear-gradient(135deg, #1a0a2e, #2d0a3e); }
+  .bg2 { background: linear-gradient(135deg, #0a1a0f, #0a2d14); }
+  .bg3 { background: linear-gradient(135deg, #1a100a, #2d1a0a); }
+  .bg4 { background: linear-gradient(135deg, #0a0f1a, #0a142d); }
+  .bg5 { background: linear-gradient(135deg, #1a0a0a, #2d0a0a); }
+  .bg6 { background: linear-gradient(135deg, #0f1a0a, #1a2d0a); }
+
+  .game-card-info { padding: 14px 16px 16px; }
+
+  .game-card-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .game-card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
+  .game-players { font-size: 12px; color: var(--text-dim); }
+  .game-players span { color: var(--green); font-weight: 600; }
+
+  .play-btn {
+    padding: 5px 14px;
+    background: rgba(248,194,51,0.12);
+    border: 1px solid rgba(248,194,51,0.3);
+    border-radius: 12px;
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .play-btn:hover { background: var(--gold); color: #0a0a0f; }
+
+  .game-badge {
+    position: absolute;
+    top: 10px; left: 10px;
+    background: var(--red);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 8px;
+    letter-spacing: 0.5px;
+    z-index: 2;
+  }
+
+  .game-badge.new { background: var(--green); color: #0a0a0f; }
+  .game-badge.hot { background: #ff6b00; }
+
+  /* ── PAYMENT SECTION ── */
+  .payment-section {
+    position: relative;
+    z-index: 1;
+    background: var(--dark2);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin: 0;
+    padding: 56px 24px;
+  }
+
+  .payment-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+
+  .payment-info h2 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 14px;
+  }
+
+  .payment-info h2 span { color: var(--gold); }
+  .payment-info p { color: var(--text-dim); font-size: 16px; line-height: 1.7; margin-bottom: 28px; }
+
+  .payment-features { display: flex; flex-direction: column; gap: 14px; }
+
+  .payment-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 18px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    transition: border-color 0.2s;
+  }
+
+  .payment-feature:hover { border-color: rgba(248,194,51,0.2); }
+
+  .pf-icon {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    background: rgba(248,194,51,0.1);
+  }
+
+  .pf-text h4 { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+  .pf-text p { font-size: 13px; color: var(--text-dim); line-height: 1.5; }
+
+  /* Payment Form */
+  .payment-form-wrap {
+    background: var(--dark3);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .payment-form-wrap::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: 30px; right: 30px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  .form-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+
+  .form-subtitle { font-size: 13px; color: var(--text-dim); margin-bottom: 24px; }
+
+  /* Amount selector */
+  .amount-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .amt-btn {
+    padding: 10px 6px;
+    background: var(--dark4);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .amt-btn:hover, .amt-btn.active {
+    border-color: var(--gold);
+    background: rgba(248,194,51,0.08);
+    color: var(--gold);
+  }
+
+  .form-group { margin-bottom: 16px; }
+
+  .form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .form-group input {
+    width: 100%;
+    background: var(--dark4);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    font-size: 15px;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+
+  .form-group input:focus { border-color: rgba(248,194,51,0.5); }
+  .form-group input::placeholder { color: var(--text-dim); }
+
+  .methods-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .method-btn {
+    flex: 1;
+    padding: 10px 8px;
+    background: var(--dark4);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    color: var(--text-dim);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .method-btn:hover, .method-btn.active {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(248,194,51,0.06);
+  }
+
+  .method-btn .micon { font-size: 20px; margin-bottom: 4px; display: block; }
+
+  .deposit-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+    border: none;
+    border-radius: 10px;
+    color: #0a0a0f;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 20px rgba(248,194,51,0.3);
+    margin-top: 8px;
+  }
+
+  .deposit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(248,194,51,0.5); }
+
+  .secure-note {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    padding: 10px 14px;
+    background: rgba(0,230,118,0.05);
+    border: 1px solid rgba(0,230,118,0.15);
+    border-radius: 8px;
+    font-size: 12px;
+    color: var(--green);
+  }
+
+  /* ── TICKER ── */
+  .ticker-wrap {
+    background: rgba(248,194,51,0.06);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+    padding: 10px 0;
+  }
+
+  .ticker-track {
+    display: flex;
+    gap: 48px;
+    animation: ticker 25s linear infinite;
+    white-space: nowrap;
+  }
+
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  .ticker-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .ticker-user { color: var(--gold); }
+  .ticker-amt { color: var(--green); }
+  .ticker-sep { color: var(--text-dim); }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative;
+    z-index: 1;
+    background: var(--dark2);
+    border-top: 1px solid var(--border);
+    padding: 40px 24px 20px;
+  }
+
+  .footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 32px;
+  }
+
+  .footer-brand p { font-size: 14px; color: var(--text-dim); line-height: 1.7; margin-top: 14px; max-width: 300px; }
+
+  .footer-col h4 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+  .footer-col ul li a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+
+  .footer-col ul li a:hover { color: var(--gold); }
+
+  .footer-bottom {
+    border-top: 1px solid var(--border);
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  .footer-bottom p { font-size: 13px; color: var(--text-dim); }
+
+  .age-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,23,68,0.1);
+    border: 1px solid rgba(255,23,68,0.2);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--red);
+  }
+
+  /* ── MODALS ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-overlay.open { display: flex; animation: fadeIn 0.2s ease; }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .modal {
+    background: var(--dark3);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 36px;
+    width: 100%;
+    max-width: 420px;
+    position: relative;
+    animation: slideUp 0.3s ease;
+  }
+
+  @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+  .modal::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: 30px; right: 30px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    width: 32px; height: 32px;
+    border: none;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+    color: var(--text-dim);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .modal-close:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+  .modal-logo {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .modal h2 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+
+  .modal-sub {
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+  }
+
+  .modal .form-group input {
+    background: var(--dark4);
+  }
+
+  .modal-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+    border: none;
+    border-radius: 10px;
+    color: #0a0a0f;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 1px;
+    margin-top: 8px;
+  }
+
+  .modal-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(248,194,51,0.4); }
+
+  .modal-switch {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 14px;
+    color: var(--text-dim);
+  }
+
+  .modal-switch a { color: var(--gold); text-decoration: none; font-weight: 600; cursor: pointer; }
+  .modal-switch a:hover { text-decoration: underline; }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 20px 0;
+  }
+
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .divider span { font-size: 12px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    .payment-inner { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr 1fr; }
+    .nav-links { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    .footer-inner { grid-template-columns: 1fr; }
+    .games-grid { grid-template-columns: repeat(2, 1fr); }
+    .bonus-grid { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; gap: 14px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ REGISTER MODAL (2-step) ══ -->
+<div class="modal-overlay" id="registerModal">
+  <div class="modal" style="max-width:440px;">
+    <button class="modal-close" onclick="closeModal('registerModal')">✕</button>
+
+    <!-- Step bar -->
+    <div style="display:flex;gap:8px;margin-bottom:22px;">
+      <div id="step1dot" style="flex:1;height:4px;border-radius:4px;background:var(--gold);transition:all .3s;"></div>
+      <div id="step2dot" style="flex:1;height:4px;border-radius:4px;background:rgba(255,255,255,0.1);transition:all .3s;"></div>
+    </div>
+
+    <!-- STEP 1 -->
+    <div id="regStep1">
+      <div class="modal-logo" style="text-align:center;margin-bottom:16px;">
+        <div style="display:inline-flex;align-items:center;gap:10px;">
+          <div class="logo-badge">IN</div>
+          <span class="logo-text">IN999</span>
+        </div>
+      </div>
+      <h2 style="text-align:center;margin-bottom:4px;">Create Account</h2>
+      <p class="modal-sub">Register &amp; Get <span style="color:var(--gold);font-weight:700;">₹500 Bonus 🎁</span></p>
+
+      <div class="form-group">
+        <label>Mobile Number *</label>
+        <input type="tel" id="regMobile" placeholder="Enter 10-digit mobile number" maxlength="10"
+          oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+        <div id="mobileErr" style="color:#ff4d4d;font-size:12px;margin-top:4px;display:none;">Please enter valid 10-digit mobile number</div>
+      </div>
+
+      <div class="form-group">
+        <label>Create Password *</label>
+        <div style="position:relative;">
+          <input type="password" id="regPass" placeholder="Minimum 6 characters" style="padding-right:44px;">
+          <button type="button" onclick="togglePass('regPass',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:16px;padding:0;">👁</button>
+        </div>
+        <div id="passErr" style="color:#ff4d4d;font-size:12px;margin-top:4px;display:none;">Password must be at least 6 characters</div>
+      </div>
+
+      <div class="form-group">
+        <label>Referral Code <span style="color:var(--text-dim);font-weight:400;">(Optional)</span></label>
+        <input type="text" id="regRef" placeholder="Enter referral code for extra bonus">
+      </div>
+
+      <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:6px;">
+        <input type="checkbox" id="regTerms" style="margin-top:3px;accent-color:var(--gold);width:16px;height:16px;cursor:pointer;flex-shrink:0;">
+        <label for="regTerms" style="font-size:13px;color:var(--text-dim);cursor:pointer;line-height:1.5;">
+          I am 18+ and agree to <a href="#" style="color:var(--gold);">Terms &amp; Conditions</a>
+        </label>
+      </div>
+      <div id="termsErr" style="color:#ff4d4d;font-size:12px;margin-bottom:14px;display:none;">Please accept terms to continue</div>
+
+      <button class="modal-btn" style="margin-top:6px;" onclick="goToStep2()">Next — Select Amount →</button>
+      <p class="modal-switch">Already have an account? <a onclick="openModal('loginModal');closeModal('registerModal')">Login Here</a></p>
+    </div>
+
+    <!-- STEP 2 -->
+    <div id="regStep2" style="display:none;">
+      <div style="text-align:center;margin-bottom:16px;">
+        <div style="font-size:44px;">🎉</div>
+        <h2 style="margin-top:8px;margin-bottom:4px;">Almost Done!</h2>
+        <p class="modal-sub">Choose deposit amount &amp; enter the game</p>
+      </div>
+
+      <div style="background:rgba(0,230,118,0.08);border:1px solid rgba(0,230,118,0.25);border-radius:12px;padding:12px 16px;margin-bottom:18px;display:flex;align-items:center;gap:12px;">
+        <span style="font-size:20px;">✅</span>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#00e676;">Account Ready!</div>
+          <div style="font-size:12px;color:var(--text-dim);margin-top:2px;">₹500 bonus credited after first deposit</div>
+        </div>
+      </div>
+
+      <label style="display:block;font-size:12px;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Select Deposit Amount</label>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px;">
+        <button class="amt-btn reg-amt" onclick="setRegAmt(this,100)">₹100</button>
+        <button class="amt-btn reg-amt active" onclick="setRegAmt(this,500)">₹500</button>
+        <button class="amt-btn reg-amt" onclick="setRegAmt(this,1000)">₹1,000</button>
+        <button class="amt-btn reg-amt" onclick="setRegAmt(this,2000)">₹2,000</button>
+        <button class="amt-btn reg-amt" onclick="setRegAmt(this,5000)">₹5,000</button>
+        <button class="amt-btn reg-amt" onclick="setRegAmt(this,10000)">₹10,000</button>
+      </div>
+
+      <button class="modal-btn" onclick="doRegister()" style="margin-bottom:10px;">💰 Deposit &amp; Enter Game →</button>
+      <button type="button" onclick="goBackStep1()" style="width:100%;padding:10px;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--text-dim);font-size:14px;cursor:pointer;font-family:inherit;">← Go Back</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ LOGIN MODAL ══ -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
+    <div class="modal-logo" style="text-align:center;margin-bottom:16px;">
+      <div style="display:inline-flex;align-items:center;gap:10px;">
+        <div class="logo-badge">IN</div>
+        <span class="logo-text">IN999</span>
+      </div>
+    </div>
+    <h2 style="text-align:center;margin-bottom:4px;">Welcome Back! 👋</h2>
+    <p class="modal-sub">Login to your IN999 account</p>
+    <div class="form-group">
+      <label>Mobile Number</label>
+      <input type="tel" id="loginMobile" placeholder="Enter 10-digit mobile number" maxlength="10"
+        oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+      <div id="loginMobErr" style="color:#ff4d4d;font-size:12px;margin-top:4px;display:none;">Enter valid mobile number</div>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <div style="position:relative;">
+        <input type="password" id="loginPass" placeholder="Enter password" style="padding-right:44px;">
+        <button type="button" onclick="togglePass('loginPass',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:16px;padding:0;">👁</button>
+      </div>
+      <div id="loginPassErr" style="color:#ff4d4d;font-size:12px;margin-top:4px;display:none;">Please enter your password</div>
+    </div>
+    <div style="text-align:right;margin-top:-8px;margin-bottom:16px;">
+      <a href="#" style="font-size:13px;color:var(--gold);">Forgot Password?</a>
+    </div>
+    <button class="modal-btn" onclick="doLogin()">Login &amp; Play →</button>
+    <p class="modal-switch">New here? <a onclick="openModal('registerModal');closeModal('loginModal')">Create Free Account</a></p>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="#">
+      <div class="logo-badge">IN</div>
+      <span class="logo-text">IN999</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#games">Games</a></li>
+      <li><a href="#bonus">Bonus</a></li>
+      <li><a href="#payment">Deposit</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+    <div class="nav-btns">
+      <button class="btn-login" onclick="openModal('loginModal')">Login</button>
+      <button class="btn-register" onclick="openModal('registerModal')">Register →</button>
+    </div>
+  </div>
+</nav>
+
+<!-- LIVE TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <div class="ticker-item"><span class="ticker-user">Raj***</span><span class="ticker-sep">won</span><span class="ticker-amt">₹12,500</span><span class="ticker-sep">•</span></div>
+    <div class="ticker-item"><span class="ticker-user">Priya***</span><span class="ticker-sep">won</span><span class="ticker-amt">₹8,200</span><span class="ticker-sep">•</span></div>
+    <div class="ticker-item"><span class="ticker-user">Amit***</span><span class="ticker-sep">won</span><span class="ticker-amt">₹45,000</span><span class="ticker-sep">•</span></div>
+    <div class="ticker-item"><span class="ticker-user">Sita***</span><span class="ticker-sep">won</span><span class="ticker-amt">₹3,750</span><span class="ticker-sep">•</span></div>
+    <div class="ticker-item"><span class="ticker-user">Rohit***</span><span class="ticker-sep">won</span><span class="ticker-amt">₹22,000</span><span class="ticker-sep">•</span></div>
+    <div class="ticker-item"><span class="ticker-user">Neha***</span><span class="ticker-sep">won</span><span class="ticker-amt">₹9,600</span><span class="ticker-sep">•</span></div>
+    <div class="ticker-item"><span class="ticker-user">Vikram***</span><span class="ticker-sep">won</span><span class="ticker-amt">₹61,000</span><span class="ticker-sep">•</span></div>
+    <!-- Duplicate for seamless loop -->
+    <div class="ticker-item"><span class="ticker-user">Raj***</span><span class="ticker-sep">won</span><span class="ticker-amt">₹12,500</span><span class="ticker-sep">•</span></div>
+    <div class="ticker-item"><span class="ticker-user">Priya***</span><span class="ticker-sep">won</span><span class="ticker-amt">₹8,200</span><span class="ticker-sep">•</span></div>
+    <div class="ticker-item"><span class="ticker-user">Amit***</span><span class="ticker-sep">won</span><span class="ticker-amt">₹45,000</span><span class="ticker-sep">•</span></div>
+    <div class="ticker-item"><span class="ticker-user">Sita***</span><span class="ticker-sep">won</span><span class="ticker-amt">₹3,750</span><span class="ticker-sep">•</span></div>
+    <div class="ticker-item"><span class="ticker-user">Rohit***</span><span class="ticker-sep">won</span><span class="ticker-amt">₹22,000</span><span class="ticker-sep">•</span></div>
+    <div class="ticker-item"><span class="ticker-user">Neha***</span><span class="ticker-sep">won</span><span class="ticker-amt">₹9,600</span><span class="ticker-sep">•</span></div>
+    <div class="ticker-item"><span class="ticker-user">Vikram***</span><span class="ticker-sep">won</span><span class="ticker-amt">₹61,000</span><span class="ticker-sep">•</span></div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="section hero">
+  <div class="hero-content">
+    <div class="hero-label">🎮 India's #1 Gaming Platform</div>
+    <h1>Play Smart,<br><span>Win Big</span> Every Day</h1>
+    <p>Join over 50 lakh players on IN999. Register now and claim your ₹500 sign up bonus instantly. Fast withdrawals, 24/7 support.</p>
+    <div class="hero-btns">
+      <button class="hero-btn-primary" onclick="openModal('registerModal')">🎁 Claim ₹500 Bonus</button>
+      <button class="hero-btn-secondary" onclick="document.getElementById('games').scrollIntoView({behavior:'smooth'})">Browse Games</button>
+    </div>
+    <div class="stats-bar">
+      <div class="stat"><div class="stat-num">50L+</div><div class="stat-label">Active Players</div></div>
+      <div class="stat"><div class="stat-num">₹500</div><div class="stat-label">Sign Up Bonus</div></div>
+      <div class="stat"><div class="stat-num">2 Min</div><div class="stat-label">Fast Withdrawal</div></div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card">
+      <div class="bonus-display">
+        <div class="bonus-amount">₹500</div>
+        <div class="bonus-label">Welcome Bonus</div>
+      </div>
+      <div class="mini-games">
+        <div class="mini-game"><div class="mini-game-icon">🎰</div><div class="mini-game-name">Slots</div></div>
+        <div class="mini-game"><div class="mini-game-icon">🎯</div><div class="mini-game-name">Lottery</div></div>
+        <div class="mini-game"><div class="mini-game-icon">🃏</div><div class="mini-game-name">Cards</div></div>
+        <div class="mini-game"><div class="mini-game-icon">🎲</div><div class="mini-game-name">Dice</div></div>
+        <div class="mini-game"><div class="mini-game-icon">🐉</div><div class="mini-game-name">Dragon</div></div>
+        <div class="mini-game"><div class="mini-game-icon">🔢</div><div class="mini-game-name">Number</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- BONUS OFFERS -->
+<section class="section" id="bonus">
+  <div class="section-header">
+    <div>
+      <div class="section-title">🎁 Bonus & <span>Offers</span></div>
+    </div>
+  </div>
+  <div class="bonus-grid">
+    <div class="bonus-card">
+      <div class="bonus-card-tag">Welcome Bonus</div>
+      <div class="bonus-big-num">₹500</div>
+      <h3>Sign Up Bonus</h3>
+      <p>Register today and get ₹500 instantly credited to your account. No deposit required for sign up!</p>
+      <button class="claim-btn" onclick="claimBonus('Sign Up Bonus')">Claim Now →</button>
+    </div>
+    <div class="bonus-card">
+      <div class="bonus-card-tag green">First Deposit</div>
+      <div class="bonus-big-num green">100%</div>
+      <h3>First Deposit Bonus</h3>
+      <p>Get 100% bonus on your first deposit. Deposit ₹1000, play with ₹2000. Max bonus up to ₹5,000.</p>
+      <button class="claim-btn" onclick="document.getElementById('payment').scrollIntoView({behavior:'smooth'})">Deposit Now →</button>
+    </div>
+    <div class="bonus-card">
+      <div class="bonus-card-tag blue">Referral</div>
+      <div class="bonus-big-num" style="color:var(--blue)">₹200</div>
+      <h3>Refer & Earn</h3>
+      <p>Refer a friend and earn ₹200 for every successful referral. Unlimited earnings with no cap!</p>
+      <button class="claim-btn" onclick="claimBonus('Referral Bonus')">Start Referring →</button>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- GAMES -->
+<section class="section" id="games">
+  <div class="section-header">
+    <div class="section-title">🕹️ Popular <span>Games</span></div>
+  </div>
+  <div class="games-grid">
+    <div class="game-card">
+      <div class="game-badge hot">🔥 HOT</div>
+      <div class="game-card-img bg1">🎰</div>
+      <div class="game-card-info">
+        <div class="game-card-name">Wingo Lottery</div>
+        <div class="game-card-meta">
+          <span class="game-players"><span>2,341</span> playing</span>
+          <button class="play-btn" onclick="playGame('Wingo Lottery')">Play</button>
+        </div>
+      </div>
+    </div>
+    <div class="game-card">
+      <div class="game-badge new">✨ NEW</div>
+      <div class="game-card-img bg2">🐉</div>
+      <div class="game-card-info">
+        <div class="game-card-name">Dragon Tiger</div>
+        <div class="game-card-meta">
+          <span class="game-players"><span>1,876</span> playing</span>
+          <button class="play-btn" onclick="playGame('Dragon Tiger')">Play</button>
+        </div>
+      </div>
+    </div>
+    <div class="game-card">
+      <div class="game-card-img bg3">🎯</div>
+      <div class="game-card-info">
+        <div class="game-card-name">K3 Lottery</div>
+        <div class="game-card-meta">
+          <span class="game-players"><span>987</span> playing</span>
+          <button class="play-btn" onclick="playGame('K3 Lottery')">Play</button>
+        </div>
+      </div>
+    </div>
+    <div class="game-card">
+      <div class="game-badge hot">🔥 HOT</div>
+      <div class="game-card-img bg4">🃏</div>
+      <div class="game-card-info">
+        <div class="game-card-name">Teen Patti</div>
+        <div class="game-card-meta">
+          <span class="game-players"><span>3,210</span> playing</span>
+          <button class="play-btn" onclick="playGame('Teen Patti')">Play</button>
+        </div>
+      </div>
+    </div>
+    <div class="game-card">
+      <div class="game-card-img bg5">✈️</div>
+      <div class="game-card-info">
+        <div class="game-card-name">Aviator</div>
+        <div class="game-card-meta">
+          <span class="game-players"><span>4,502</span> playing</span>
+          <button class="play-btn" onclick="playGame('Aviator')">Play</button>
+        </div>
+      </div>
+    </div>
+    <div class="game-card">
+      <div class="game-badge new">✨ NEW</div>
+      <div class="game-card-img bg6">🎲</div>
+      <div class="game-card-info">
+        <div class="game-card-name">5D Lottery</div>
+        <div class="game-card-meta">
+          <span class="game-players"><span>1,234</span> playing</span>
+          <button class="play-btn" onclick="playGame('5D Lottery')">Play</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAYMENT SECTION -->
+<div class="payment-section" id="payment">
+  <div class="payment-inner">
+    <div class="payment-info">
+      <h2>Instant <span>Deposit</span> &<br>Fast Withdrawal</h2>
+      <p>Deposit securely using your preferred payment method. All transactions are encrypted and processed instantly.</p>
+      <div class="payment-features">
+        <div class="payment-feature">
+          <div class="pf-icon">⚡</div>
+          <div class="pf-text">
+            <h4>Instant Processing</h4>
+            <p>Deposits credited within seconds. Start playing immediately after payment.</p>
+          </div>
+        </div>
+        <div class="payment-feature">
+          <div class="pf-icon">🔒</div>
+          <div class="pf-text">
+            <h4>100% Secure</h4>
+            <p>Bank-grade SSL encryption protects all your transactions and personal data.</p>
+          </div>
+        </div>
+        <div class="payment-feature">
+          <div class="pf-icon">💸</div>
+          <div class="pf-text">
+            <h4>2-Min Withdrawals</h4>
+            <p>Fastest withdrawal in India. Get your winnings in under 2 minutes, 24/7.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="payment-form-wrap">
+      <div class="form-title">Quick Deposit</div>
+      <div class="form-subtitle">Select amount or enter custom</div>
+
+      <div class="amount-grid">
+        <button class="amt-btn" onclick="selectAmt(this,'100')">₹100</button>
+        <button class="amt-btn active" onclick="selectAmt(this,'500')">₹500</button>
+        <button class="amt-btn" onclick="selectAmt(this,'1000')">₹1,000</button>
+        <button class="amt-btn" onclick="selectAmt(this,'2000')">₹2,000</button>
+        <button class="amt-btn" onclick="selectAmt(this,'5000')">₹5,000</button>
+        <button class="amt-btn" onclick="selectAmt(this,'10000')">₹10,000</button>
+      </div>
+
+      <div class="form-group">
+        <label>Custom Amount (₹)</label>
+        <input type="number" id="customAmt" placeholder="Enter amount" min="100">
+      </div>
+
+      <div class="form-group">
+        <label>Payment Method</label>
+        <div class="methods-row">
+          <button class="method-btn active" onclick="selectMethod(this)"><span class="micon">📱</span>UPI</button>
+          <button class="method-btn" onclick="selectMethod(this)"><span class="micon">🏦</span>Bank</button>
+          <button class="method-btn" onclick="selectMethod(this)"><span class="micon">💳</span>Card</button>
+          <button class="method-btn" onclick="selectMethod(this)"><span class="micon">📲</span>PhonePe</button>
+        </div>
+      </div>
+
+      <!-- Payment Link: instagramagentof@oksbi -->
+      <a id="mainDepositBtn" href="upi://pay?pa=instagramagentof@oksbi&pn=IN999&tn=IN999+Deposit&am=500&cu=INR" target="_blank" style="text-decoration:none;display:block;">
+        <button class="deposit-btn">💰 Deposit Now →</button>
+      </a>
+
+      <!-- App shortcuts -->
+      <div style="margin-top:10px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+        <a id="phonePeBtn" href="phonepe://pay?pa=instagramagentof@oksbi&pn=IN999&tn=IN999+Deposit&am=500&cu=INR" style="text-decoration:none;">
+          <button class="method-btn active" style="padding:8px 16px;font-size:12px;">📲 PhonePe</button>
+        </a>
+        <a id="gpayBtn" href="gpay://upi/pay?pa=instagramagentof@oksbi&pn=IN999&tn=IN999+Deposit&am=500&cu=INR" style="text-decoration:none;">
+          <button class="method-btn" style="padding:8px 16px;font-size:12px;">🟦 GPay</button>
+        </a>
+        <a id="paytmBtn" href="paytmmp://pay?pa=instagramagentof@oksbi&pn=IN999&tn=IN999+Deposit&am=500&cu=INR" style="text-decoration:none;">
+          <button class="method-btn" style="padding:8px 16px;font-size:12px;">💙 Paytm</button>
+        </a>
+      </div>
+
+      <div class="secure-note">
+        🔒 Secured by 256-bit SSL encryption. Your funds are safe.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div class="logo-badge">IN</div>
+        <span class="logo-text">IN999</span>
+      </div>
+      <p>India's most trusted gaming platform. Powered by 91 Club. Fair play guaranteed with RNG-certified games.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Games</h4>
+      <ul>
+        <li><a href="#">Wingo Lottery</a></li>
+        <li><a href="#">Dragon Tiger</a></li>
+        <li><a href="#">K3 Lottery</a></li>
+        <li><a href="#">Teen Patti</a></li>
+        <li><a href="#">Aviator</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">Help Center</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Responsible Gaming</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 IN999 Game. All rights reserved. Powered by 91 Club.</p>
+    <div class="age-badge">🔞 18+ Only</div>
+  </div>
+</footer>
+
+<script>
+  // ── UPI CONFIG ──
+  const UPI_ID   = 'instagramagentof@oksbi';
+  const UPI_NAME = 'IN999';
+
+  let selectedAmount = 500; // default
+
+  // Build UPI deep link with amount
+  function buildUPI(amt, note) {
+    amt  = amt  || selectedAmount;
+    note = note || 'IN999 Deposit';
+    return `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(UPI_NAME)}&tn=${encodeURIComponent(note)}&am=${amt}&cu=INR`;
+  }
+
+  // ── UPI register amount ──
+  let regSelectedAmt = 500;
+
+  // ── MODALS ──
+  function openModal(id) {
+    document.getElementById(id).classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(id) {
+    document.getElementById(id).classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Close on overlay click
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', function(e) {
+      if (e.target === this) { this.classList.remove('open'); document.body.style.overflow = ''; }
+    });
+  });
+
+  // Close on ESC
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal-overlay.open').forEach(m => {
+        m.classList.remove('open'); document.body.style.overflow = '';
+      });
+    }
+  });
+
+  // ── PASSWORD TOGGLE ──
+  function togglePass(id, btn) {
+    const inp = document.getElementById(id);
+    if (inp.type === 'password') { inp.type = 'text'; if(btn) btn.textContent = '🙈'; }
+    else { inp.type = 'password'; if(btn) btn.textContent = '👁'; }
+  }
+
+  // ── REGISTER STEP 1 VALIDATION → go to step 2 ──
+  function goToStep2() {
+    const mobile = document.getElementById('regMobile').value.trim();
+    const pass   = document.getElementById('regPass').value;
+    const terms  = document.getElementById('regTerms').checked;
+    let ok = true;
+
+    document.getElementById('mobileErr').style.display = 'none';
+    document.getElementById('passErr').style.display   = 'none';
+    document.getElementById('termsErr').style.display  = 'none';
+
+    if (!/^[6-9][0-9]{9}$/.test(mobile)) {
+      document.getElementById('mobileErr').style.display = 'block'; ok = false;
+    }
+    if (pass.length < 6) {
+      document.getElementById('passErr').style.display = 'block'; ok = false;
+    }
+    if (!terms) {
+      document.getElementById('termsErr').style.display = 'block'; ok = false;
+    }
+    if (!ok) return;
+
+    // Go to step 2
+    document.getElementById('regStep1').style.display = 'none';
+    document.getElementById('regStep2').style.display = 'block';
+    document.getElementById('step1dot').style.background = 'var(--gold)';
+    document.getElementById('step2dot').style.background = 'var(--gold)';
+  }
+
+  function goBackStep1() {
+    document.getElementById('regStep2').style.display = 'none';
+    document.getElementById('regStep1').style.display = 'block';
+    document.getElementById('step2dot').style.background = 'rgba(255,255,255,0.1)';
+  }
+
+  // Register amount picker
+  function setRegAmt(el, val) {
+    document.querySelectorAll('.reg-amt').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    regSelectedAmt = val;
+  }
+
+  // ── AMOUNT SELECTOR (deposit section) ──
+  function selectAmt(el, val) {
+    document.querySelectorAll('.amt-btn:not(.reg-amt)').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    selectedAmount = parseInt(val);
+    document.getElementById('customAmt').value = val;
+    updateDepositLinks();
+  }
+
+  // Custom amount input live update
+  document.getElementById('customAmt').addEventListener('input', function() {
+    if (this.value && parseInt(this.value) > 0) {
+      selectedAmount = parseInt(this.value);
+      document.querySelectorAll('.amt-btn:not(.reg-amt)').forEach(b => b.classList.remove('active'));
+      updateDepositLinks();
+    }
+  });
+
+  // Update deposit section links
+  function updateDepositLinks() {
+    const link = buildUPI(selectedAmount, 'IN999 Deposit');
+    document.getElementById('mainDepositBtn').href = link;
+    document.getElementById('phonePeBtn').href     = link.replace('upi://', 'phonepe://');
+    document.getElementById('gpayBtn').href        = link.replace('upi://', 'gpay://upi/');
+    document.getElementById('paytmBtn').href       = link.replace('upi://', 'paytmmp://');
+  }
+
+  // ── PAYMENT METHOD SELECTOR ──
+  function selectMethod(el) {
+    document.querySelectorAll('.method-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // ── PLAY BUTTONS → register modal ──
+  function playGame(gameName) {
+    window._pendingGame = gameName;
+    openModal('registerModal');
+  }
+
+  // ── CLAIM BONUS → register modal ──
+  function claimBonus(type) {
+    window._pendingNote = type;
+    openModal('registerModal');
+  }
+
+  // ── LOGIN → validate then UPI ──
+  function doLogin() {
+    const mob  = document.getElementById('loginMobile').value.trim();
+    const pass = document.getElementById('loginPass').value;
+    let ok = true;
+    document.getElementById('loginMobErr').style.display  = 'none';
+    document.getElementById('loginPassErr').style.display = 'none';
+    if (!/^[6-9][0-9]{9}$/.test(mob)) {
+      document.getElementById('loginMobErr').style.display = 'block'; ok = false;
+    }
+    if (!pass) {
+      document.getElementById('loginPassErr').style.display = 'block'; ok = false;
+    }
+    if (!ok) return;
+    window.location.href = buildUPI(selectedAmount, 'IN999 Login Deposit');
+  }
+
+  // ── REGISTER STEP 2 → UPI ──
+  function doRegister() {
+    const note = window._pendingGame ? `IN999 ${window._pendingGame}` : 'IN999 Welcome Bonus';
+    window.location.href = buildUPI(regSelectedAmt, note);
+  }
+
+  // Init on load
+  window.addEventListener('DOMContentLoaded', function() {
+    updateDepositLinks();
+  });
+</script>
+</body>
+</html>
