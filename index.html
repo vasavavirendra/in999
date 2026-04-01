@@ -1029,32 +1029,36 @@
 
     <!-- STEP 2 -->
     <div id="regStep2" style="display:none;">
-      <div style="text-align:center;margin-bottom:16px;">
-        <div style="font-size:44px;">🎉</div>
-        <h2 style="margin-top:8px;margin-bottom:4px;">Almost Done!</h2>
-        <p class="modal-sub">Choose deposit amount &amp; enter the game</p>
+      <div style="text-align:center;margin-bottom:20px;">
+        <div style="font-size:56px;animation:bounceIn .5s ease;">🎉</div>
+        <h2 style="margin-top:10px;margin-bottom:4px;">Welcome to IN999!</h2>
+        <p class="modal-sub">Registration successful! Your account is ready.</p>
       </div>
 
-      <div style="background:rgba(0,230,118,0.08);border:1px solid rgba(0,230,118,0.25);border-radius:12px;padding:12px 16px;margin-bottom:18px;display:flex;align-items:center;gap:12px;">
-        <span style="font-size:20px;">✅</span>
-        <div>
-          <div style="font-size:14px;font-weight:700;color:#00e676;">Account Ready!</div>
-          <div style="font-size:12px;color:var(--text-dim);margin-top:2px;">₹500 bonus credited after first deposit</div>
+      <!-- Balance card -->
+      <div style="background:linear-gradient(135deg,#1a1400,#2d2200);border:1px solid rgba(248,194,51,0.4);border-radius:16px;padding:20px;margin-bottom:18px;text-align:center;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:-20px;right:-20px;width:80px;height:80px;background:rgba(248,194,51,0.08);border-radius:50%;"></div>
+        <div style="font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:2px;margin-bottom:6px;">Your Bonus Balance</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-size:48px;font-weight:700;color:var(--gold);line-height:1;text-shadow:0 0 20px rgba(248,194,51,0.4);">₹100</div>
+        <div style="font-size:12px;color:var(--green);margin-top:6px;font-weight:600;">✅ Credited to your account</div>
+      </div>
+
+      <!-- Info row -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:12px;text-align:center;">
+          <div style="font-size:20px;">🎮</div>
+          <div style="font-size:12px;font-weight:700;color:#fff;margin-top:4px;">Play Now</div>
+          <div style="font-size:11px;color:var(--text-dim);">Use bonus to play</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:12px;text-align:center;">
+          <div style="font-size:20px;">📱</div>
+          <div style="font-size:12px;font-weight:700;color:#fff;margin-top:4px;">Download App</div>
+          <div style="font-size:11px;color:var(--text-dim);">Best experience</div>
         </div>
       </div>
 
-      <label style="display:block;font-size:12px;font-weight:600;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Select Deposit Amount</label>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px;">
-        <button class="amt-btn reg-amt" onclick="setRegAmt(this,100)">₹100</button>
-        <button class="amt-btn reg-amt active" onclick="setRegAmt(this,500)">₹500</button>
-        <button class="amt-btn reg-amt" onclick="setRegAmt(this,1000)">₹1,000</button>
-        <button class="amt-btn reg-amt" onclick="setRegAmt(this,2000)">₹2,000</button>
-        <button class="amt-btn reg-amt" onclick="setRegAmt(this,5000)">₹5,000</button>
-        <button class="amt-btn reg-amt" onclick="setRegAmt(this,10000)">₹10,000</button>
-      </div>
-
-      <button class="modal-btn" onclick="doRegister()" style="margin-bottom:10px;">💰 Deposit &amp; Enter Game →</button>
-      <button type="button" onclick="goBackStep1()" style="width:100%;padding:10px;background:transparent;border:1px solid var(--border);border-radius:8px;color:var(--text-dim);font-size:14px;cursor:pointer;font-family:inherit;">← Go Back</button>
+      <button class="modal-btn" onclick="doRegister()" style="margin-bottom:10px;">🎮 Start Playing Now →</button>
+      <a href="#apk-download" onclick="closeModal('registerModal')" style="display:block;text-align:center;color:var(--gold);font-size:13px;font-weight:600;padding:8px;text-decoration:none;">📥 Download APK Instead</a>
     </div>
   </div>
 </div>
@@ -1107,6 +1111,9 @@
       <li><a href="#about">About</a></li>
     </ul>
     <div class="nav-btns">
+      <a href="#apk-download" style="text-decoration:none;">
+        <button class="btn-login" style="border-color:#00e676;color:#00e676;display:flex;align-items:center;gap:6px;">📥 APK</button>
+      </a>
       <button class="btn-login" onclick="openModal('loginModal')">Login</button>
       <button class="btn-register" onclick="openModal('registerModal')">Register →</button>
     </div>
@@ -1362,6 +1369,81 @@
 </div>
 
 <!-- FOOTER -->
+<!-- APK DOWNLOAD SECTION -->
+<div id="apk-download" style="position:relative;z-index:1;background:linear-gradient(135deg,#0f0f00,#1a1400,#0f0f00);border-top:1px solid rgba(248,194,51,0.2);border-bottom:1px solid rgba(248,194,51,0.2);padding:56px 24px;">
+  <div style="max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
+    <div>
+      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(0,230,118,0.1);border:1px solid rgba(0,230,118,0.3);border-radius:20px;padding:4px 14px;font-size:12px;font-weight:600;color:#00e676;letter-spacing:1px;text-transform:uppercase;margin-bottom:18px;">
+        ● Latest Version v2.5.1
+      </div>
+      <h2 style="font-family:'Rajdhani',sans-serif;font-size:clamp(28px,4vw,42px);font-weight:700;color:#fff;line-height:1.15;margin-bottom:12px;">
+        Download <span style="color:var(--gold);">IN999 App</span><br>For Android
+      </h2>
+      <p style="color:var(--text-dim);font-size:15px;line-height:1.7;margin-bottom:28px;">
+        Get the best gaming experience on your phone. Faster, smoother, and more features. Download our official APK for Android devices.
+      </p>
+      <!-- App stats row -->
+      <div style="display:flex;gap:24px;margin-bottom:32px;">
+        <div>
+          <div style="font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:var(--gold);">50L+</div>
+          <div style="font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;">Downloads</div>
+        </div>
+        <div>
+          <div style="font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:var(--gold);">4.8 ★</div>
+          <div style="font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;">Rating</div>
+        </div>
+        <div>
+          <div style="font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:var(--gold);">28 MB</div>
+          <div style="font-size:11px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;">File Size</div>
+        </div>
+      </div>
+      <!-- Download button -->
+      <a href="https://in999.com.co" target="_blank" style="text-decoration:none;">
+        <button style="display:inline-flex;align-items:center;gap:12px;padding:16px 32px;background:linear-gradient(90deg,#d4a017,#f8c233);border:none;border-radius:12px;cursor:pointer;transition:all .2s;box-shadow:0 4px 24px rgba(248,194,51,0.35);"
+          onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 32px rgba(248,194,51,0.5)'"
+          onmouseout="this.style.transform='';this.style.boxShadow='0 4px 24px rgba(248,194,51,0.35)'">
+          <span style="font-size:28px;">📥</span>
+          <div style="text-align:left;">
+            <div style="font-size:11px;color:#0a0a0f;font-weight:600;letter-spacing:1px;text-transform:uppercase;">Download Free</div>
+            <div style="font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;color:#0a0a0f;line-height:1.1;">IN999 APK</div>
+          </div>
+        </button>
+      </a>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:14px;font-size:12px;color:var(--text-dim);">
+        <span style="color:#00e676;">🔒</span> Safe &amp; Verified • Android 5.0+ Required • No Root Needed
+      </div>
+    </div>
+    <!-- Phone mockup visual -->
+    <div style="display:flex;justify-content:center;">
+      <div style="width:200px;background:linear-gradient(160deg,var(--dark3),var(--dark4));border:2px solid rgba(248,194,51,0.25);border-radius:36px;padding:18px;box-shadow:0 20px 60px rgba(0,0,0,0.6),0 0 40px rgba(248,194,51,0.1);position:relative;">
+        <!-- Phone notch -->
+        <div style="width:60px;height:6px;background:rgba(255,255,255,0.1);border-radius:4px;margin:0 auto 14px;"></div>
+        <!-- Screen content -->
+        <div style="background:var(--dark);border-radius:20px;padding:16px;min-height:280px;">
+          <div style="text-align:center;margin-bottom:14px;">
+            <div style="display:inline-flex;align-items:center;gap:6px;margin-bottom:8px;">
+              <div style="width:28px;height:28px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#0a0a0f;font-family:Rajdhani,sans-serif;">IN</div>
+              <span style="font-family:Rajdhani,sans-serif;font-weight:700;color:var(--gold);font-size:14px;letter-spacing:1px;">IN999</span>
+            </div>
+            <div style="background:linear-gradient(135deg,#1a1400,#2d2200);border:1px solid rgba(248,194,51,0.3);border-radius:12px;padding:12px;margin-bottom:10px;">
+              <div style="font-size:10px;color:var(--text-dim);margin-bottom:2px;">Balance</div>
+              <div style="font-family:Rajdhani,sans-serif;font-size:28px;font-weight:700;color:var(--gold);">₹100</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+            <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px;text-align:center;font-size:16px;">🎰</div>
+            <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px;text-align:center;font-size:16px;">🐉</div>
+            <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px;text-align:center;font-size:16px;">🃏</div>
+            <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px;text-align:center;font-size:16px;">✈️</div>
+          </div>
+        </div>
+        <!-- Home bar -->
+        <div style="width:50px;height:4px;background:rgba(255,255,255,0.15);border-radius:4px;margin:12px auto 0;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <footer>
   <div class="footer-inner">
     <div class="footer-brand">
@@ -1552,10 +1634,12 @@
     window.location.href = buildUPI(selectedAmount, 'IN999 Login Deposit');
   }
 
-  // ── REGISTER STEP 2 → UPI ──
+  // ── REGISTER STEP 2 → Close modal, go to games ──
   function doRegister() {
-    const note = window._pendingGame ? `IN999 ${window._pendingGame}` : 'IN999 Welcome Bonus';
-    window.location.href = buildUPI(regSelectedAmt, note);
+    closeModal('registerModal');
+    // Scroll to games section
+    const games = document.getElementById('games');
+    if (games) games.scrollIntoView({behavior:'smooth'});
   }
 
   // Init on load
